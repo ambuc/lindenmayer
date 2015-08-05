@@ -1,0 +1,117 @@
+<!-- 
+http://archive.lib.msu.edu/crcmath/math/math/h/h274.htm
+http://mathworld.wolfram.com/LindenmayerSystem.html
+http://www.cs.unm.edu/~joel/PaperFoldingFractal/L-system-rules.html
+https://en.wikipedia.org/wiki/List_of_fractals_by_Hausdorff_dimension
+https://github.com/davebalmer/turtlewax
+file:///Users/jamesbuckland/Desktop/josh/inde.html
+http://stackoverflow.com/questions/7033116/resize-and-scale-html5-canvas-and-contents 
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Turtle</title>
+	<style>
+		canvas{
+			/*height: auto;*/
+			/*width: auto;*/
+		}
+		#outer {
+			background: pink;
+		}
+		#inner {
+			background: red;
+		}
+	</style>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"> </script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"> </script>
+	<script type="text/javascript" src="pen_min.js"> </script>
+
+</head>
+
+<body>
+	<canvas id="outer">
+		<canvas id="inner"></canvas>
+	</canvas>
+
+</body>
+
+<script type="text/javascript">
+
+	function increase_depth(base, lookup, depth){
+		if(depth==0){
+			ret = '';
+			for(var i = 0; i < base.length; i++){
+				if (base.charAt(i) in lookup){
+					ret += lookup[base.charAt(i)];
+				} else {
+					ret += base.charAt(i);
+				}
+			}
+			return ret;
+		} else {
+			return increase_depth(increase_depth(base, lookup, 0), lookup, depth-1);
+		}
+	}
+
+	function translate(instructions, lookup){
+		ret = [];
+		for(var i = 0; i < instructions.length; i++){
+			ret.push(lookup[instructions.charAt(i)]);
+		}
+		console.log(ret);
+		return ret;
+	}
+
+	$( document ).ready(function() {
+		
+
+		var outer = document.getElementsByTagName('canvas')[0];
+		outer.width  = 1400;
+		outer.height = 1400; 
+		outer.style.width  = '100%';
+		outer.style.height = '100%';
+
+		var inner = document.getElementsByTagName('canvas')[1];
+		inner.width  = 1400;
+		inner.height = 1400; 
+		inner.style.width  = '100%';
+		inner.style.height = '100%';
+
+	    console.log( "ready!" );
+
+    	var p = new Pen("inner");
+    	var seg_len = 10;
+
+	    // var expand_lookup = {'L':'+RF-LFL-FR+', 'R':'-LF+RFR+FL-'};
+	    // var translate_lookup = {'L':'', 'R':'', '+':'p.turn(90);', '-':'p.turn(-90);', 'F':'p.go(seg_len);'};
+	    var expand_lookup = {'A':'A-B--B+A++AA+B-' , 'B':'+A-BB--B-A++A+B'};
+		var translate_lookup = {'A':'p.go(seg_len);', 'B':'p.go(seg_len);', '+':'p.turn(60);', '-':'p.turn(-60);'};
+        var full_instructions = increase_depth('A', expand_lookup, 3);
+
+		
+		var translated_instruction = translate(full_instructions, translate_lookup);
+
+		p.begin();
+		p.pendown();
+		p.jump(inner.width/2, inner.height/2).fillstyle("white").pensize(2);
+		// p.jump(300,100).fillstyle("white").pensize(2);
+
+		for(var i = 0; i < translated_instruction.length; i++){
+			if(translated_instruction[i]){
+				eval(translated_instruction[i]);
+				// console.log(translated_instruction[i]);
+			}
+		}
+		p.draw();
+
+
+	});
+
+</script>
+
+
+
+</html>
