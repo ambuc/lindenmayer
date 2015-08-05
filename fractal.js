@@ -1,3 +1,6 @@
+var size_min = 400;
+var size_max = 1000;
+
 function increase_depth(base, lookup, d){
 	if(d==0){
 		ret = '';
@@ -19,7 +22,7 @@ function translate(instructions, lookup){
 	for(var i = 0; i < instructions.length; i++){
 		ret.push(lookup[instructions.charAt(i)]);
 	}
-	console.log(ret);
+	// console.log(ret);
 	return ret;
 }
 
@@ -29,6 +32,9 @@ function clear(){
 
 function draw(){
 	clear();
+
+	canvas.width = size_min;
+	canvas.height = size_min;
 
     var depth = Math.floor($('#depth').val());
 	var seg_len = $('#length').val();
@@ -60,6 +66,7 @@ function draw(){
 }
 
 $( document ).ready(function() {
+	var canvas = $('canvas#canvas')[0];
 
     console.log( "ready!" );
     draw();

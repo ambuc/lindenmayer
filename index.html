@@ -19,7 +19,7 @@ http://stackoverflow.com/questions/7033116/resize-and-scale-html5-canvas-and-con
 	<body>
 		<div class='container'>
 			<div class='row'>
-				<div class='col s12 m12 l6 left-align right'>
+				<div class='col s12 m6 left-align right'>
 					<h1>Fractal</h1>
 					<h6>
 						<a href='http://archive.lib.msu.edu/crcmath/math/math/h/h274.htm'>Lindenmayer System</a>-based web demo for fractal creation
@@ -27,18 +27,17 @@ http://stackoverflow.com/questions/7033116/resize-and-scale-html5-canvas-and-con
 					<br/>
 					<div class='row'>
 				        <div class="input-field col s4">
-							<input value="2" id="depth" type="number" value="0" min="0" max="5"/>
+							<input value="2" id="depth" type="number" min="0" max="5"/>
 				        	<label for="depth">Depth (int)</label>
 				        </div>
 				        <div class="input-field col s4">
-							<input value="5" id="length" type="number" value="0" min="0" max="20"/>
+							<input value="5" id="length" type="number" min="1" max="20"/>
 				        	<label for="length">Length</label>
 				        </div>
 				        <div class="input-field col s4">
-							<input value="2" id="stroke" type="number" value="0" min="0" max="20"/>
+							<input value="2" id="stroke" type="number" min="1" max="20"/>
 				        	<label for="stroke">Stroke</label>
 				        </div>
-
 					</div>
 					<div class='row'>
 						<div class='col s12'>
@@ -48,9 +47,21 @@ http://stackoverflow.com/questions/7033116/resize-and-scale-html5-canvas-and-con
 					</div>
 				</div>
 
-				<div class='col s12 m12 l6 center-align left'>
-					<canvas id="canvas">
-					</canvas>
+				<div class='col s12 m6 center-align left'>
+					<div class='row'>
+						<div class='col s12'>
+							<canvas class='responsive-img' id="canvas">
+							</canvas>
+						</div>
+					</div>
+					<div class='row'>
+						<div class='col s12'>
+							<p class="range-field">
+					        	<input type="range" id="zoom" min="0" max="100" />
+					        	<label for="zoom">Zoom</label>
+						    </p>
+						</div>
+					</div>
 				</div>
 				
 			</div>
