@@ -247,6 +247,13 @@ function save(){
 	myWindow.focus();
 }
 
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 $( document ).ready(function() {
 	
 	var canvas = $('canvas#canvas')[0];
@@ -263,6 +270,7 @@ $( document ).ready(function() {
 	system = libraryChange(lib);
 	$('select#library option').first().prop("selected", true);
 
+	console.log(getParameterByName('butts'));
 
     $('a#draw').click(function(){
 		draw(system);
