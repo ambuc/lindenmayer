@@ -190,7 +190,7 @@ function setZoom(){
 	var z = ( 1 - (size - size_max) / (size_min - size_max) ) * 100;
 	$('input#zoom').val(z);
 }
-
+ 
 function updateSize(){
 	var val = $('input#zoom').val();
 	size = size_max - (100 - val) / 100 * (size_max - size_min);

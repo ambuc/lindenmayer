@@ -1,6 +1,6 @@
 #Lindenmayer
 
-See the *demo* at **[/lindenmayer](http://jbuckland.com/lindenmayer).**
+See the **demo** at **[/lindenmayer](http://jbuckland.com/lindenmayer).**
 
 [<img src="http://jbuckland.com/images/lindenmayer_thumbnail.png">](http://jbuckland.com/lindenmayer)
 
