@@ -1,43 +1,45 @@
 #Lindenmayer
 
-[<img src="/images/lindenmayer_thumbnail.png">](/lindenmayer)
+See the *demo* at **[/lindenmayer](http://jbuckland.com/lindenmayer).**
+
+[<img src="http://jbuckland.com/images/lindenmayer_thumbnail.png">](http://jbuckland.com/lindenmayer)
 
 
 ##About Lindenmayer Systems
 
 **L-systems** are formal grammar structures used in the study of both botany and mathematics, usually to simulate iterative or recursive structures, such as algae or fractals. In this case, we employ them to render fractals.
 
-As noted, in the [Wikipedia article](https://en.wikipedia.org/wiki/L-system) on L-systems (from which much of this math is cribbed), an L-system can be represented by the tuple $$\v G = (V, \omega, P)$$
+As noted, in the [Wikipedia article](https://en.wikipedia.org/wiki/L-system) on L-systems (from which much of this math is cribbed), an L-system can be represented by the tuple G = (V, ω, P)
 
-- where $\v G$ is the _alphabet_,  
-- $\omega$ is the _seed_, the first string, and   
-- $P$ is the set of _production rules_, by which the current string is replaced by definitions from the alphabet.
+- where G is the _alphabet_,  
+- ω is the _seed_, the first string, and   
+- P is the set of _production rules_, by which the current string is replaced by definitions from the alphabet.
 
 ##Dragon Curve
 
 Let's take the famous Dragon Curve for example. Here,  
 
-- $\v G = [X, Y]$,  
-- $\omega = FX$, and  
-- $P = (X \longrightarrow X+YF+,\quad Y \longrightarrow -FX-Y)$. 
+- G = [X, Y]$,  
+- ω = FX, and  
+- P = (X &#x2192; X+YF+, &#x2192; -FX-Y). 
 
-In this example, $X$ and $Y$ are variables, which get replaced iteratively with the definitions in $P$; $+$ and $-$ are _right_ and _left_ turns, respectively, and $F$ means _go forwards_.
+In this example, X and Y are variables, which get replaced iteratively with the definitions in P; + and - are _right_ and _left_ turns, respectively, and F means _go forwards_.
 
 At a depth of 0, we have only the initial string $\omega$: 
 
-> $FX$
+> FX
 
 At a depth of 1, we get 
 
-> $FX \longrightarrow F[X]$  
-> $\phantom{FX} \longrightarrow F[X+YF+]$  
-> $\phantom{FX} \longrightarrow FX+YF+$
+> FX &#x2192; F[X]   
+> &#x2192; F[X+YF+]  
+> &#x2192; FX+YF+  
 
 At a depth of 2, we get 
 
-> $FX+YF+ \longrightarrow F[X]+[Y]F+$  
-> $\phantom{FX+YF+} \longrightarrow F[X+YF+]+[-FX-Y]F+$  
-> $\phantom{FX+YF+} \longrightarrow FX+YF++-FX-YF+$
+> FX+YF+ &#x2192; F[X]+[Y]F+  
+> &#x2192; F[X+YF+]+[-FX-Y]F+  
+> &#x2192; FX+YF++-FX-YF+
 
 You can see where this is going. 
 
@@ -101,6 +103,3 @@ The dragon curve takes a number of iterations to get going, but many of the othe
 	            eval(item)
 
 The Javascript source can be found [on Github](https://github.com/ambuc/lindenmayer/tree/gh-pages).
-
-
-See the demo at **[/lindenmayer](/lindenmayer).**
