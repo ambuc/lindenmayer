@@ -19,7 +19,7 @@ As noted, in the [Wikipedia article](https://en.wikipedia.org/wiki/L-system) on 
 
 Let's take the famous Dragon Curve for example. Here,  
 
-- G = [X, Y]$,  
+- G = [X, Y],  
 - ω = FX, and  
 - P = (X &#x2192; X+YF+, &#x2192; -FX-Y). 
 
@@ -101,5 +101,3 @@ The dragon curve takes a number of iterations to get going, but many of the othe
 	    for item in instructions:
 	        if item:
 	            eval(item)
-
-The Javascript source can be found [on Github](https://github.com/ambuc/lindenmayer/tree/gh-pages).
