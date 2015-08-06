@@ -161,7 +161,16 @@ function draw(system){
 	var length = $('input#length').val();
 	var stroke = $('input#stroke').val();
 	var turnRight = $('input#turn_r').val();
-	var turnLeft = $('input#turn_l').val();
+	if($('input#sym').prop('checked')==true){
+		console.log('true');
+		$('input#turn_l').prop('disabled', 'disabled');
+		var turnLeft = -$('input#turn_r').val();
+		$('input#turn_l').val(-$('input#turn_r').val())
+	} else {
+		console.log('false');
+		$('input#turn_l').prop('disabled', '');
+		var turnLeft = $('input#turn_l').val();
+	}
 
 	_.each(_.keys(system.rules), function(key){
 		system.rules[key] = $('input#'+key).val();
@@ -176,6 +185,13 @@ function draw(system){
 
     var steps = rewrite(system.initial, system.rules, depth);
 	
+	if(steps.length > 8000){
+		depth = depth - 1;
+		$('input#depth').val(depth);
+		draw(system);
+		return;
+	}
+
 	var instructions = translate(steps, length, turnRight, turnLeft);
 
 	for(var i = 0; i < instructions.length; i++){
@@ -199,6 +215,7 @@ function updateSize(){
 function newSystem(lib){
 	system = lib[$('select#library').val()];
 	$('input#depth').val(system.depth);
+	$('input#sym').prop('checked', true);
 	$('input#turn_l').val(system.turnLeft);
 	$('input#turn_r').val(system.turnRight);
 	$('input#length').val(seg_len);
@@ -219,6 +236,10 @@ function newSystem(lib){
 	$('html').focus();
 
 	$('input').keyup(function(){
+		draw(system);
+	});
+
+	$('#sym').click(function(){
 		draw(system);
 	});
 

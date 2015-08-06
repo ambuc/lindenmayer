@@ -1,146 +1,150 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Lindenmayer</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	    <link rel="stylesheet" type="text/css" href="css/css.css" />
-	</head>
+<head>
+	<title>Lindenmayer</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/css.css" />
+</head>
 
-	<body> 
-		<div class='container'>
-			<div class='row'>
-				<div class='col s12 m6 left-align right'>
-					<h1>Lindenmayer </h1>
+<body> 
+	<div class='container'>
+		<div class='row'>
+			<div class='col s12 m6 left-align right'>
+				<h1>Lindenmayer </h1>
 
-					<p>(Tip: use the up/down arrow keys to change values)</p>
+				<p>(Tip: use the up/down arrow keys to change values)</p>
 
-					<div class='row'>
-						<div class="col s12">
-					        <label>Fractal Pattern</label>
-						    <select class='browser-default  indigo lighten-2 white-text' id='library'>
-						    </select>
-						</div>						
-					</div>
-
-					<div class='row' id='e_lookup'>
-				        <div class="input-field col s2">
-							<input id="initial" type="text"/>
-				        	<label for="initial" class='tooltipped' data-position="top" data-delay="50" data-tooltip="The initial string to expand upon">Seed</label>
-				        </div>
-				      <span class='rules'>
-				      	<!-- of the form -->
-				        <div class="input-field col s5">
-							<input  id="a" type="text"/>
-				        	<label for="a">A &#x2192; </label>
-				        </div>
-				      </span>
-				      <div class="input-field col s2">
-							<input id="depth" type="number" min="0" max="10"/>
-				        	<label for="depth" class='tooltipped' data-position="top" data-delay="50" data-tooltip="Don't set the depth too high, it can get very slow.">Depth</label>
-				        </div>
-				      <div class="input-field col s5">
-							<input  id="turn_l" type="number" min="-360" max="360"/>
-				        	<label for="turn_l" class='tooltipped' data-position="top" data-delay="50" data-tooltip="How many degrees left to turn">Left turn (&#x2212;)</label>
-				        </div>
-				        <div class="input-field col s5">
-							<input  id="turn_r" type="number" min="-360" max="360"/>
-				        	<label for="turn_r" class='tooltipped' data-position="top" data-delay="50" data-tooltip="How many degrees right to turn">Right turn (&#x2b;)</label>
-				        </div>
-					</div>
-
-					<div class='row'>
-				        <div class="input-field col s6">
-							<input id="length" type="number" min="1" max="20"/>
-				        	<label for="length" class='tooltipped' data-position="top" data-delay="50" data-tooltip="The length of a line segment">Length</label>
-				        </div>
-				        <div class="input-field col s6">
-							<input  id="stroke" type="number" min="1" max="20"/>
-				        	<label for="stroke" class='tooltipped' data-position="top" data-delay="50" data-tooltip="The thickness of the pen">Stroke</label>
-				        </div>
-			        </div>
-
-					<div class='row'>
-						<div class='col s12'>
-							<a class="waves-effect waves-light green lighten-2 white-text btn-flat" id='draw'>
-								<i class='material-icons left hide-on-small-only'>edit</i>
-								Draw
-							</a>
-							<a class="waves-effect waves-light grey lighten-1 white-text btn-flat" id='clear'>
-								<i class='material-icons left hide-on-small-only'>delete</i>
-								Clear
-							</a>
-							<a class="waves-effect waves-light blue lighten-1 white-text btn-flat" id='save'>
-								<i class='material-icons left hide-on-small-only'>save</i>
-								Save
-							</a>
-							<a class='waves-effect waves-light amber white-text btn-flat  modal-trigger' href="#infomodal" id='info'>
-								<i class='material-icons left hide-on-small-only'>help</i>INFO
-							</a>
-						</div>
-					</div>
-
+				<div class='row'>
+					<div class="col s12">
+						<label>Fractal Pattern</label>
+						<select class='browser-default  indigo lighten-2 white-text' id='library'>
+						</select>
+					</div>						
 				</div>
 
-				  <!-- Modal Structure -->
-				  <div id="infomodal" class="modal modal-fixed-footer">
-				    <div class="modal-content">
-
-						<h5>How To Use</h5>
-						<p>
-							Rewriting systems accept rules, such as <br/>
-							<blockquote>
-								<b>X &#x2192; X&#x2b;YF&#x2b;</b> <br/>
-								<b>Y &#x2192; &#x2212;FX&#x2212;Y</b>
-							</blockquote>
-							and iteratively apply those rules to a seed (<b>FX</b>) a certain number of times (<b>7</b>). Those characters are then translated into instructions for drawing a fractal. In this case, <b>F</b> means go forward a certain amount, <b>&#x2b;</b> means turn right, and <b>&#x2212;</b> means turn left.
-						</p>
-						<p>
-							<b>Click the <span class='indigo-text'>indigo dropdown</span></b> to browse some common fractals and their respective Lindenmayer systems. Or, by editing the seed, rules, angles, and drawing parameters, you can create your own fractals!
-						</p>
-
-					    <h5>About Lindenmayer Systems</h5>
-					    <blockquote>
-					    	An <b>L-system</b> or <b>Lindenmayer system</b> is a parallel <a href="https://en.wikipedia.org/wiki/Rewriting_system">rewriting system</a> and a type of <a href="https://en.wikipedia.org/wiki/Formal_grammar">formal grammar</a>. An L-system consists of an <a href="https://en.wikipedia.org/wiki/Alphabet">alphabet</a> of symbols that can be used to make <a href="https://en.wikipedia.org/wiki/String_(computer_science)">strings</a>, a collection of <a href="https://en.wikipedia.org/wiki/Production_(computer_science)">production rules</a> that expand each symbol into some larger string of symbols, an initial "<a href="https://en.wikipedia.org/wiki/Axiom">axiom</a>" string from which to begin construction, and a mechanism for translating the generated strings into geometric structures.
-					    </blockquote>
-
-				    </div>
-				    <div class="modal-footer">
-				      <a href="#!" class="modal-action modal-close waves-effect waves-green btn btn-flat green white-text "><i class='material-icons left hide-on-small-only'>thumb_up</i>Cool, thanks</a>
-				    </div>
-				  </div>
-
-				<div class='col s12 m6 center-align left'>
-					<div class='row'>
-						<div class='col s12'>
-							<canvas class='responsive-img' id="canvas">
-							</canvas>
-						</div>
+				<div class='row' id='e_lookup'>
+					<div class="input-field col s2">
+						<input id="initial" type="text"/>
+						<label for="initial" class='tooltipped' data-position="top" data-delay="50" data-tooltip="The initial string to expand upon">Seed</label>
 					</div>
-					<div class='row'>
-						<div class='col s12'>
-							<p class="zoom range-field">
-					        	<input type="range" id="zoom" min="0" max="100" />
-					        	<label for="zoom">Zoom</label>
-						    </p>
+					<span class='rules'>
+						<!-- of the form -->
+						<div class="input-field col s5">
+							<input  id="a" type="text"/>
+							<label for="a">A &#x2192; </label>
 						</div>
+					</span>
+					<div class="input-field col s2">
+						<input id="depth" type="number" min="0" max="10"/>
+						<label for="depth" class='tooltipped' data-position="top" data-delay="50" data-tooltip="Don't set the depth too high, it can get very slow.">Depth</label>
+					</div>
+					<div class="input-field col s3">
+						<input  id="turn_r" type="number" min="-360" max="360"/>
+						<label for="turn_r" class='tooltipped' data-position="top" data-delay="50" data-tooltip="How many degrees right to turn">Right turn (&#x2b;)</label>
+					</div>
+					<div class="input-field col s3">
+						<input  id="turn_l" type="number" min="-360" max="360"/>
+						<label for="turn_l" class='tooltipped' data-position="top" data-delay="50" data-tooltip="How many degrees left to turn">Left turn (&#x2212;)</label>
+					</div>
+					<div class='input-field col s4'>
+						<input type="checkbox" class="filled-in" id="sym" checked="unchecked" />
+					    <label for="sym">Symmetrical</label>
+					</div>
+				</div>
+
+				<div class='row'>
+					<div class="input-field col s6">
+						<input id="length" type="number" min="1" max="20"/>
+						<label for="length" class='tooltipped' data-position="top" data-delay="50" data-tooltip="The length of a line segment">Length</label>
+					</div>
+					<div class="input-field col s6">
+						<input  id="stroke" type="number" min="1" max="20"/>
+						<label for="stroke" class='tooltipped' data-position="top" data-delay="50" data-tooltip="The thickness of the pen">Stroke</label>
+					</div>
+				</div>
+
+				<div class='row'>
+					<div class='col s12'>
+						<a class="waves-effect waves-light green lighten-2 white-text btn-flat" id='draw'>
+							<i class='material-icons left hide-on-small-only'>edit</i>
+							Draw
+						</a>
+						<a class="waves-effect waves-light grey lighten-1 white-text btn-flat" id='clear'>
+							<i class='material-icons left hide-on-small-only'>delete</i>
+							Clear
+						</a>
+						<a class="waves-effect waves-light blue lighten-1 white-text btn-flat" id='save'>
+							<i class='material-icons left hide-on-small-only'>save</i>
+							Save
+						</a>
+						<a class='waves-effect waves-light amber white-text btn-flat  modal-trigger' href="#infomodal" id='info'>
+							<i class='material-icons left hide-on-small-only'>help</i>INFO
+						</a>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Modal Structure -->
+			<div id="infomodal" class="modal modal-fixed-footer">
+				<div class="modal-content">
+
+					<h5>How To Use</h5>
+					<p>
+						Rewriting systems accept rules, such as <br/>
+						<blockquote>
+							<b>X &#x2192; X&#x2b;YF&#x2b;</b> <br/>
+							<b>Y &#x2192; &#x2212;FX&#x2212;Y</b>
+						</blockquote>
+						and iteratively apply those rules to a seed (<b>FX</b>) a certain number of times (<b>7</b>). Those characters are then translated into instructions for drawing a fractal. In this case, <b>F</b> means go forward a certain amount, <b>&#x2b;</b> means turn right, and <b>&#x2212;</b> means turn left.
+					</p>
+					<p>
+						<b>Click the <span class='indigo-text'>indigo dropdown</span></b> to browse some common fractals and their respective Lindenmayer systems. Or, by editing the seed, rules, angles, and drawing parameters, you can create your own fractals!
+					</p>
+
+					<h5>About Lindenmayer Systems</h5>
+					<blockquote>
+						An <b>L-system</b> or <b>Lindenmayer system</b> is a parallel <a href="https://en.wikipedia.org/wiki/Rewriting_system">rewriting system</a> and a type of <a href="https://en.wikipedia.org/wiki/Formal_grammar">formal grammar</a>. An L-system consists of an <a href="https://en.wikipedia.org/wiki/Alphabet">alphabet</a> of symbols that can be used to make <a href="https://en.wikipedia.org/wiki/String_(computer_science)">strings</a>, a collection of <a href="https://en.wikipedia.org/wiki/Production_(computer_science)">production rules</a> that expand each symbol into some larger string of symbols, an initial "<a href="https://en.wikipedia.org/wiki/Axiom">axiom</a>" string from which to begin construction, and a mechanism for translating the generated strings into geometric structures.
+					</blockquote>
+
+				</div>
+				<div class="modal-footer">
+					<a href="#!" class="modal-action modal-close waves-effect waves-green btn btn-flat green white-text "><i class='material-icons left hide-on-small-only'>thumb_up</i>Cool, thanks</a>
+				</div>
+			</div>
+
+			<div class='col s12 m6 center-align left'>
+				<div class='row'>
+					<div class='col s12'>
+						<canvas class='responsive-img' id="canvas">
+						</canvas>
+					</div>
+				</div>
+				<div class='row'>
+					<div class='col s12'>
+						<p class="zoom range-field">
+							<input type="range" id="zoom" min="0" max="100" />
+							<label for="zoom">Zoom</label>
+						</p>
 					</div>
 				</div>
 			</div>
 		</div>
-		<footer>
-			<div class='container'>
-				<p> Made by <a href="https://github.com/JoshMermel">Josh Mermelstein</a> and <a href="https://github.com/ambuc">James Buckland</a> using <a href='https://github.com/davebalmer/turtlewax'>turtlewax</a>. Fractal generation based on <a href='http://archive.lib.msu.edu/crcmath/math/math/h/h274.htm'>Lindenmayer Systems</a>.</p>
-				<p> Citations: <a href="http://archive.lib.msu.edu/crcmath/math/math/h/h274.htm">Michigan State University Libraries • Hilbert Curve</a>, <a href="http://mathworld.wolfram.com/LindenmayerSystem.html">Wolfram MathWorld • Lindenmayer System</a>, and <a href="http://www.cs.unm.edu/~joel/PaperFoldingFractal/L-system-rules.html">University of New Mexico • Joel Castellanos • L-system Rules</a>
-				</p>
-			</div>
-		</footer>
-	</body>
+	</div>
+	<footer>
+		<div class='container'>
+			<p> Made by <a href="https://github.com/JoshMermel">Josh Mermelstein</a> and <a href="https://github.com/ambuc">James Buckland</a> using <a href='https://github.com/davebalmer/turtlewax'>turtlewax</a>. Fractal generation based on <a href='http://archive.lib.msu.edu/crcmath/math/math/h/h274.htm'>Lindenmayer Systems</a>.</p>
+			<p> Citations: <a href="http://archive.lib.msu.edu/crcmath/math/math/h/h274.htm">Michigan State University Libraries • Hilbert Curve</a>, <a href="http://mathworld.wolfram.com/LindenmayerSystem.html">Wolfram MathWorld • Lindenmayer System</a>, and <a href="http://www.cs.unm.edu/~joel/PaperFoldingFractal/L-system-rules.html">University of New Mexico • Joel Castellanos • L-system Rules</a>
+			</p>
+		</div>
+	</footer>
+</body>
 
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"> </script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"> </script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
-	<script type="text/javascript" src="lib/pen_min.js"> </script>
-	<script type="text/javascript" src="js/fractal.js"> </script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"> </script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
+<script type="text/javascript" src="lib/pen_min.js"> </script>
+<script type="text/javascript" src="js/fractal.js"> </script>
 
 </html>
