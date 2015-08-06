@@ -44,7 +44,7 @@ var lib = {
 		e_lookup : {
 			"F" : "F+F--F+F"
 		},
-		initial : 'F-F-F',
+		initial : 'F-F-F-F-F-F',
 		turn_l : -60,
 		turn_r : 60,
 		depth: 1
