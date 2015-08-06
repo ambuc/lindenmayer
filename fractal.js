@@ -1,11 +1,11 @@
 var lib = {
 
 	'Dragon Curve' : {
-		e_lookup : {
+		rules : {
 			'X' : 'X+YF+',
 			'Y' : '-FX-Y'
 		},
-		t_lookup : {
+		alphabet : {
 			'X' : '',
 			'Y' : '',
 			'+' : 'right',
@@ -13,60 +13,60 @@ var lib = {
 			'F' : 'forward'
 		},
 		initial : 'FX',
-		turn_l : -90,
-		turn_r : 90,
+		turnLeft : -90,
+		turnRight : 90,
 		depth: 7
 	},
 
 	'Peano-Gosper Curve':{
-		e_lookup : {
+		rules : {
 			"X" : "X+YF++YF-FX--FXFX-YF+",
 			"Y" : "-FX+YFYF++YF+FX--FX-Y"
 		},
 		initial : 'YF',
-		turn_l : -60,
-		turn_r : 60,
+		turnLeft : -60,
+		turnRight : 60,
 		depth: 2
 	},
 
 	'Square Curve':{
-		e_lookup : {
+		rules : {
 			"X" : "XF-F+F-XF+F+XF-F+F-X"
 		},
 		initial : 'X',
-		turn_l : -90,
-		turn_r : 90,
+		turnLeft : -90,
+		turnRight : 90,
 		depth: 2
 	},
 
 
 	'Koch Snowflake':{
-		e_lookup : {
+		rules : {
 			"F" : "F+F--F+F"
 		},
 		initial : 'F-F-F-F-F-F',
-		turn_l : -60,
-		turn_r : 60,
+		turnLeft : -60,
+		turnRight : 60,
 		depth: 1
 	},
 
 	'Sierpinski Arrowhead Curve':{
-		e_lookup : {
+		rules : {
 			"X" : "YF+XF+Y", 
 			"Y" : "XF-YF-X"
 		},
 		initial : 'YF',
-		turn_l : -60,
-		turn_r : 60,
+		turnLeft : -60,
+		turnRight : 60,
 		depth: 4
 	},
 
 	'Square System': {
-		e_lookup : {
+		rules : {
 			'L':'+RF-LFL-FR+', 
 			'R':'-LF+RFR+FL-'
 		},
-		t_lookup : {
+		alphabet : {
 			'L':'', 
 			'R':'', 
 			'+' : 'right',
@@ -74,18 +74,18 @@ var lib = {
 			'F' : 'forward'
 		},
 		initial : 'L',
-		turn_l : -90,
-		turn_r : 90,
+		turnLeft : -90,
+		turnRight : 90,
 	    depth : 3
 	},
 
 
 	'Double Back System' : {
-		e_lookup : {
+		rules : {
 			"X" : "XFYFX+F+YFXFY-F-XFYFX", 
 			"Y" : "YFXFY-F-XFYFX+F+YFXFY"
 		},
-		t_lookup : {
+		alphabet : {
 			'X' : '',
 			'Y' : '',
 			'+' : 'right',
@@ -93,8 +93,8 @@ var lib = {
 			'F' : 'forward'
 		},
 		initial: 'X',
-		turn_l : -90,
-		turn_r : 90,
+		turnLeft : -90,
+		turnRight : 90,
 	    depth : 1
 	}
 };
@@ -105,45 +105,40 @@ var size = 1500;
 var seg_len = 20;
 var stroke = 5;
 
-function increase_depth(base, lookup, d){
-	if(d==0){
-		ret = '';
-		for(var i = 0; i < base.length; i++){
-			if (base.charAt(i) in lookup){
-				ret += lookup[base.charAt(i)];
+function rewrite(str, lookup, depth){
+	if(depth==0){
+		steps = '';
+		for(var i = 0; i < str.length; i++){
+			if (str.charAt(i) in lookup){
+				steps += lookup[str.charAt(i)];
 			} else {
-				ret += base.charAt(i);
+				steps += str.charAt(i);
 			}
 		}
-		return ret;
+		return steps;
 	} else {
-		return increase_depth(increase_depth(base, lookup, 0), lookup, d-1);
+		return rewrite(rewrite(str, lookup, 0), lookup, depth-1);
 	}
 }
 
-function translate(instructions, lookup, len, turn_r, turn_l){
-	ret = [];
-	// console.log(turn_r);
-	for(var i = 0; i < instructions.length; i++){
-		// console.log(interpret(lookup[instructions.charAt(i)]));
-		ret.push(interpret(instructions.charAt(i),len,turn_r,turn_l));
-		// ret.push(lookup[instructions.charAt(i)]);
+function translate(steps, length, turnRight, turnLeft){
+	commands = [];
+	for(var i = 0; i < steps.length; i++){
+		commands.push(interpret(steps.charAt(i),length,turnRight,turnLeft));
 	}
-	// console.log(ret);
-	return ret;
+	return commands;
 }
 
-function interpret(str, len, turn_r, turn_l){
-	// console.log(str);
+function interpret(str, length, turnRight, turnLeft){
 	switch(str){
 		case 'F':
-			return 'p.go('+len+');';
+			return 'p.go('+length+');';
 			break;
 		case '-':
-			return 'p.turn('+turn_l+');';
+			return 'p.turn('+turnLeft+');';
 			break;
 		case '+':
-			return 'p.turn('+turn_r+');';
+			return 'p.turn('+turnRight+');';
 			break;
 		default:
 			return '';
@@ -163,33 +158,31 @@ function draw(system){
 	canvas.height = size;
 
     var depth = Math.floor($('input#depth').val());
-	var seg_len = $('input#length').val();
+	var length = $('input#length').val();
 	var stroke = $('input#stroke').val();
-	var turn_r = $('input#turn_r').val();
-	var turn_l = $('input#turn_l').val();
-	// console.log(system);
-	_.each(_.keys(system.e_lookup), function(key){
-		system.e_lookup[key] = $('input#'+key).val();
+	var turnRight = $('input#turn_r').val();
+	var turnLeft = $('input#turn_l').val();
+
+	_.each(_.keys(system.rules), function(key){
+		system.rules[key] = $('input#'+key).val();
 	})
 	system.initial = $('input#initial').val();
 
 	var p = new Pen("canvas");
 
 	p.begin().pendown();
-	p.fillstyle("white").pensize(stroke);
+	p.fillstyle("#FFFFFF").pensize(stroke);
 	p.jump(canvas.width/2, canvas.height/2);
 
-    var full_instructions = increase_depth(system.initial, system.e_lookup, depth);
+    var steps = rewrite(system.initial, system.rules, depth);
 	
-	var translated_instruction = translate(full_instructions, system.t_lookup, seg_len, turn_r, turn_l);
+	var instructions = translate(steps, length, turnRight, turnLeft);
 
-	for(var i = 0; i < translated_instruction.length; i++){
-		if(translated_instruction[i]){
-			eval(translated_instruction[i]);
-			// console.log(translated_instruction[i]);
+	for(var i = 0; i < instructions.length; i++){
+		if(instructions[i]){
+			eval(instructions[i]);
 		}
 	}
-
 	p.draw();
 }
 
@@ -203,55 +196,45 @@ function updateSize(){
 	size = size_max - (100 - val) / 100 * (size_max - size_min);
 }
 
-function libraryChange(lib){
-	// console.log( "Handler for .change() called." );
+function newSystem(lib){
 	system = lib[$('select#library').val()];
 	$('input#depth').val(system.depth);
-	$('input#turn_l').val(system.turn_l);
-	$('input#turn_r').val(system.turn_r);
+	$('input#turn_l').val(system.turnLeft);
+	$('input#turn_r').val(system.turnRight);
 	$('input#length').val(seg_len);
 	$('input#stroke').val(stroke);
 
-	// console.log(system.e_lookup);
-
 	$('span.rules').empty();
 
-	var width = Math.floor(10.0/_.keys(system.e_lookup).length);
+	var width = Math.floor(10.0/_.keys(system.rules).length);
 
-	_.each(_.keys(system.e_lookup), function(key){
-		// console.log(key, width);
-		$('span.rules').append('<div class="input-field col s'+width+'"> <input id="'+key+'" type="text" value="'+system.e_lookup[key]+'"/> <label for="'+key+'">'+key+' &#x2192; </label> </div>');
+	_.each(_.keys(system.rules), function(key){
+		$('span.rules').append('<div class="input-field col s'+width+'"> <input id="'+key+'" type="text" value="'+system.rules[key]+'"/> <label for="'+key+'">'+key+' &#x2192; </label> </div>');
 	});
+
+	_.each(_.keys(system.rules), function(key){
+		$('input#'+key).focus();
+	})
+
+	$('html').focus();
 
 	$('input').keyup(function(){
 		draw(system);
 	});
 
-	$('input#a').val(system.e_lookup['A']);
-	$('input#b').val(system.e_lookup['B']);
+	$('input#a').val(system.rules['A']);
+	$('input#b').val(system.rules['B']);
 	$('input#initial').val(system.initial);
 
-	draw(system);
-	// console.log(system);
 	return system;
 }
 
 function save(){
-	console.log('saving');
 	var canvas = $('#canvas')[0];
 	var img = canvas.toDataURL();
 
-	// document.write();
-	console.log(img);
 	myWindow = window.open(img, "_blank");
 	myWindow.focus();
-}
-
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 $( document ).ready(function() {
@@ -262,50 +245,28 @@ $( document ).ready(function() {
 	var system = lib.hex;
 
 	_.each(_.keys(lib), function(book){
-		// console.log(book);
 		$('select#library').append("<option value='"+book+"'>"+book+"</option>");
 	});
 
-	//this draws too
-	system = libraryChange(lib);
-	$('select#library option').first().prop("selected", true);
+	system = newSystem(lib);
+	draw(system);
 
-	console.log(getParameterByName('butts'));
+    $('a#draw').click(function(){ draw(system); });
 
-    $('a#draw').click(function(){
-		draw(system);
-	});
+	$('a#clear').click(function(){ clear(); });
 
-	$('a#clear').click(function(){
-		clear();	
-	});
-
-	$('a#save').click(function(){
-		save();	
-	});
+	$('a#save').click(function(){ save(); });
 
     $('a#info').leanModal();
 
 	$( "select#library" ).change(function() {
-		system = libraryChange(lib);
-		_.each(_.keys(system.e_lookup), function(key){
-			$('input#'+key).focus();
-		})
-		$('html').focus();
-
+		system = newSystem(lib);
+		draw(system);
 	});
 
-	$("p.zoom input").mousedown(function () {
-	    $(this).mousemove(function () {
-	        // console.log($('input#zoom').val());
-	    });
-	}).mouseup(function () {
-	    $(this).unbind('mousemove');
+	$("p.zoom input").mouseup(function () {
         updateSize();
         draw(system);
-	}).mouseout(function () {
-	    $(this).unbind('mousemove');
 	});	
 
 });
-

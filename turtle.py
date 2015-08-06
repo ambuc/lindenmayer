@@ -1,39 +1,49 @@
 from turtle import *
 
-def increase_depth(base, lookup, depth):
+# recursively rewrites $str to a given $depth using an $alphabet
+def rewrite(str, alphabet, depth):
     if depth == 0:
-        ret = ''
-        for char in base:
-            if char in lookup:
-                ret += lookup[char]
+        steps = ''
+        for char in str:
+            if char in alphabet:
+                steps += alphabet[char]
             else:
-                ret += char
-        return ret
+                steps += char
+        return steps
     else:
-        return increase_depth(increase_depth(base, lookup, 0), lookup, depth-1)
+        return rewrite(rewrite(str, alphabet, 0), alphabet, depth-1)
 
-def translate(instructions, lookup):
-    ret = []
-    for char in instructions:
-        ret.append(lookup[char])
-    return ret
+# translates a series of $steps into commands using an $alphabet
+def translate(steps, alphabet):
+    commands = []
+    for char in steps:
+        commands.append(alphabet[char])
+    return commands
 
 if __name__ == '__main__':
     T = Turtle()
     T.speed("fastest")
-    seg_len = 10
+    segmentLength = 10
+    depth = 3
 
-    expand_lookup = {'L':'+RF-LFL-FR+', 'R':'-LF+RFR+FL-'}
-    translate_lookup = {'L':'', 'R':'', '+':'T.lt(90)','-':'T.rt(90)', 'F':'T.fd(seg_len)'}
-    full_instructions = increase_depth('L', expand_lookup, 3)
+    //the entire fractal is here
+    rewritingRules = {
+        'L' : '+RF-LFL-FR+' , 
+        'R' : '-LF+RFR+FL-'
+    }
+    alphabet = {
+        'L' : '' , 
+        'R' : '' , 
+        '+' : 'T.lt(90)' ,
+        '-' : 'T.rt(90)' , 
+        'F' : 'T.fd(segmentLength)'
+    }
+    seed = 'L'
 
-    translated_instruction = translate(full_instructions, translate_lookup)
-    for item in translated_instruction:
+    steps = rewrite(seed, rewritingRules, depth)
+
+    instructions = translate(steps, alphabet)
+
+    for item in instructions:
         if item:
             eval(item)
-
-
-
-#    expand_lookup = {'A':'A-B--B+A++AA+B-' , 'B':'+A-BB--B-A++A+B',}
-#    translate_lookup = {'A':'T.fd(seg_len)', 'B':'T.fd(seg_len)', '+':'T.lt(60)', '-':'T.rt(60)'}
-#    full_instructions = increase_depth('A', expand_lookup, 3)
