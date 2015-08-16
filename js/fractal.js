@@ -185,12 +185,13 @@ function draw(system){
 
     var steps = rewrite(system.initial, system.rules, depth);
 	
-	if(steps.length > 8000){
-		depth = depth - 1;
-		$('input#depth').val(depth);
-		draw(system);
-		return;
-	}
+	//limit at 8000 draws
+	// if(steps.length > 10000){
+		// depth = depth - 1;
+		// $('input#depth').val(depth);
+		// draw(system);
+		// return;
+	// }
 
 	var instructions = translate(steps, length, turnRight, turnLeft);
 
