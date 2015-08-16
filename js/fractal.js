@@ -239,7 +239,9 @@ function newSystem(lib){
 	$('input').keyup(function(){
 		draw(system);
 	});
-
+	$('input').click(function(){
+		draw(system);
+	});
 	$('#sym').click(function(){
 		draw(system);
 	});
