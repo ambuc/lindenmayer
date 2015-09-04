@@ -1,3 +1,4 @@
+var oldsteps = "";
 var lib = {
 
 	'Dragon Curve' : {
@@ -192,7 +193,10 @@ function draw(system){
 	// }
 
 	var instructions = translate(steps, length, turnRight, turnLeft);
-	console.log(steps);
+	if(steps!=oldsteps){
+		console.log(steps);
+		oldsteps = steps;	
+	}
 	for(var i = 0; i < instructions.length; i++){
 		if(instructions[i]){
 			eval(instructions[i]);
