@@ -162,12 +162,10 @@ function draw(system){
 	var stroke = $('input#stroke').val();
 	var turnRight = $('input#turn_r').val();
 	if($('input#sym').prop('checked')==true){
-		console.log('true');
 		$('input#turn_l').prop('disabled', 'disabled');
 		var turnLeft = -$('input#turn_r').val();
 		$('input#turn_l').val(-$('input#turn_r').val())
 	} else {
-		console.log('false');
 		$('input#turn_l').prop('disabled', '');
 		var turnLeft = $('input#turn_l').val();
 	}
@@ -194,7 +192,7 @@ function draw(system){
 	// }
 
 	var instructions = translate(steps, length, turnRight, turnLeft);
-
+	console.log(steps);
 	for(var i = 0; i < instructions.length; i++){
 		if(instructions[i]){
 			eval(instructions[i]);
